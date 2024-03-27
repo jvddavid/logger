@@ -1,0 +1,61 @@
+{
+  "name": "@jvddavid/logger",
+  "type": "module",
+  "module": "dist/index.js",
+  "main": "dist/index.cjs",
+  "types": "types/index.d.ts",
+  "author": {
+    "name": "João Victor Davi de Oliveira",
+    "email": "j.victordavid2@gmail.com",
+    "url": "https://github.com/jvddavid/logger"
+  },
+  "license": "MIT",
+  "version": "1.0.0",
+  "description": "A simple logger for Node.js",
+  "keywords": [
+    "logger",
+    "node",
+    "nodejs",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jvddavid/logger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jvddavid/logger/issues"
+  },
+  "homepage": "https://github.com/jvddavid/logger",
+  "scripts": {
+    "build:types": "tsc -p tsconfig.types.json && resolve-tspaths -p tsconfig.types.json",
+    "build:esm": "bun run scripts/build.esm.ts",
+    "build:cjs": "bun run scripts/build.cjs.ts",
+    "build": "bun build:types && bun build:esm && bun build:cjs",
+    "test": "bun test"
+  },
+  "files": [
+    "dist",
+    "types"
+  ],
+  "exports": {
+    ".": {
+      "types": "./types/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs",
+      "node": "./dist/index.cjs",
+      "default": "./dist/index.js"
+    },
+    "./types": "./types"
+  },
+  "dependencies": {
+    "pino": "^8.19.0",
+    "pino-pretty": "^11.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "bun": "~1",
+    "esbuild": "^0.20.2",
+    "resolve-tspaths": "^0.8.18",
+    "typescript": "^5.4.3"
+  }
+}
