@@ -6,7 +6,7 @@ const entryPoint = 'src/index.ts'
 async function main() {
   const result = await build({
     entryPoints: [entryPoint],
-    bundle: false,
+    bundle: true,
     tsconfig: 'tsconfig.json',
     platform: 'node',
     format: 'cjs',
