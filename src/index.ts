@@ -1,12 +1,24 @@
 import type { LoggerOptions, LoggerTargets, LoggerType } from '@/interfaces'
-
 import pino from 'pino'
 
 export class Logger implements LoggerType {
   private pino: pino.Logger
+  private options: LoggerOptions
 
   constructor(options?: LoggerOptions) {
-    this.pino = this.createPinoLogger(options || {})
+    this.options = {
+      ...options,
+      pino: undefined
+    }
+    if (!options) {
+      this.pino = this.createPinoLogger({})
+      return
+    }
+    if (options.pino) {
+      this.pino = options.pino
+      return
+    }
+    this.pino = this.createPinoLogger(options)
   }
 
   private createPinoLogger(options: LoggerOptions): pino.Logger {
@@ -19,6 +31,10 @@ export class Logger implements LoggerType {
 
     if (options.files) {
       targets.push(...this.fileTargets(options))
+    }
+
+    if (options.folders) {
+      targets.push(...this.folderTargets(options))
     }
 
     return pino({
@@ -127,11 +143,63 @@ export class Logger implements LoggerType {
     return targets
   }
 
+  private folderTargets(options: LoggerOptions): LoggerTargets {
+    const defaultLevel = options.level || 'info'
+    const targets: LoggerTargets = []
+
+    for (const folder of options.folders || []) {
+      if (folder.enabled === false) {
+        continue
+      }
+      targets.push({
+        target: '@jvddavid/pino-rotating-file',
+        level: folder.level || defaultLevel,
+        options: {
+          path: folder.folder,
+          pattern: folder.pattern || 'log-%Y-%M-%d-%N.log',
+          maxSize: folder.maxSize || 10 * 1024 * 1024
+        }
+      })
+    }
+    return targets
+  }
+
   public updateOptions(options: LoggerOptions): void {
     this.pino = this.createPinoLogger(options)
   }
 
+  child(bindings: Record<string, unknown>) {
+    return new Logger({
+      ...this.options,
+      name: this.options.name || this.options.name || 'app',
+      pino: this.pino.child(bindings)
+    })
+  }
+
   get log() {
     return this.pino.info.bind(this.pino)
+  }
+  get info() {
+    return this.pino.info.bind(this.pino)
+  }
+
+  get trace() {
+    return this.pino.trace.bind(this.pino)
+  }
+
+  get debug() {
+    return this.pino.debug.bind(this.pino)
+  }
+
+  get warn() {
+    return this.pino.warn.bind(this.pino)
+  }
+
+  get error() {
+    return this.pino.error.bind(this.pino)
+  }
+
+  get fatal() {
+    return this.pino.fatal.bind(this.pino)
   }
 }
