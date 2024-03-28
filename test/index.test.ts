@@ -6,6 +6,17 @@ describe('Logger', () => {
   it('should create a new logger', async () => {
     const logger = new Logger({
       name: 'test',
+      level: 'info',
+      standard: {
+        enabled: true,
+        pretty: true
+      },
+      files: [
+        {
+          path: 'logs/test.log',
+          level: 'info'
+        }
+      ],
       folders: [
         {
           folder: 'logs',
@@ -13,7 +24,12 @@ describe('Logger', () => {
         }
       ]
     })
-    logger.log('info', 'test')
+    logger.log(
+      {
+        message: 'Hello, world!'
+      },
+      'Hello, world!'
+    )
     await new Promise(resolve => setTimeout(resolve, 1000))
     expect(logger).toBeDefined()
   })
