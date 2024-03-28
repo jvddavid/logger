@@ -31,7 +31,9 @@
     "build:esm": "bun run scripts/build.esm.ts",
     "build:cjs": "bun run scripts/build.cjs.ts",
     "build": "bun build:types && bun build:esm && bun build:cjs",
-    "test": "bun test"
+    "test": "bun test",
+    "lint": "biome lint --apply .",
+    "prepublishOnly": "bun run build && sleep 1 && bun test"
   },
   "files": [
     "dist",
@@ -53,6 +55,7 @@
     "pino-pretty": "^11.0.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^1.6.3",
     "@types/bun": "latest",
     "bun": "~1",
     "esbuild": "^0.20.2",
