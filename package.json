@@ -10,7 +10,7 @@
     "url": "https://github.com/jvddavid/logger"
   },
   "license": "MIT",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A simple logger for Node.js",
   "keywords": [
     "logger",
@@ -43,9 +43,7 @@
     ".": {
       "types": "./types/index.d.ts",
       "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "node": "./dist/index.cjs",
-      "default": "./dist/index.js"
+      "require": "./dist/index.cjs"
     },
     "./types": "./types"
   },
