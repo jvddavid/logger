@@ -203,3 +203,5 @@ export class Logger implements LoggerType {
     return this.pino.fatal.bind(this.pino)
   }
 }
+
+export default Logger
