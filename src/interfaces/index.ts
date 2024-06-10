@@ -1,6 +1,6 @@
 import type { Logger as PinoLogger } from 'pino'
 
-export type LoggerLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal'
+export type LoggerLevel = 'trace' | 'debug' | 'info' | 'warn' | 'error' | 'fatal' | 'silent'
 
 interface TransportTargetOptions<TransportOptions = Record<string, unknown>> {
   target: string

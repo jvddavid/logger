@@ -1,9 +1,14 @@
-import type { LoggerOptions, LoggerTargets, LoggerType } from '@/interfaces'
+import type { LoggerLevel, LoggerOptions, LoggerTargets, LoggerType } from '@/interfaces'
 import pino from 'pino'
 
 export class Logger implements LoggerType {
   private pino: pino.Logger
   private options: LoggerOptions
+  private _level: LoggerLevel = 'info'
+
+  get level() {
+    return this._level
+  }
 
   constructor(options?: LoggerOptions) {
     this.options = {
@@ -14,6 +19,9 @@ export class Logger implements LoggerType {
       this.pino = this.createPinoLogger({})
       return
     }
+    if (options.level) {
+      this._level = options.level
+    }
     if (options.pino) {
       this.pino = options.pino
       return
@@ -22,7 +30,6 @@ export class Logger implements LoggerType {
   }
 
   private createPinoLogger(options: LoggerOptions): pino.Logger {
-    const defaultLevel = options.level || 'info'
     const targets: LoggerTargets = []
 
     if (options.standard?.enabled !== false) {
@@ -39,7 +46,7 @@ export class Logger implements LoggerType {
 
     return pino({
       name: options.name || 'app',
-      level: defaultLevel,
+      level: this.level,
       transport: {
         targets
       }
@@ -47,11 +54,10 @@ export class Logger implements LoggerType {
   }
 
   private standardTargets(options: LoggerOptions): LoggerTargets {
-    const defaultLevel = options.level || 'info'
     const targets: LoggerTargets = []
     const stdOptions = options.standard || {
       enabled: true,
-      level: defaultLevel,
+      level: this.level,
       pretty: true
     }
 
@@ -74,7 +80,7 @@ export class Logger implements LoggerType {
     if (prettyOption.enabled) {
       targets.push({
         target: 'pino-pretty',
-        level: stdOptions.level || defaultLevel,
+        level: stdOptions.level || this.level,
         options: {
           sync: false,
           colorize: prettyOption.colorize ?? true,
@@ -86,7 +92,7 @@ export class Logger implements LoggerType {
     } else {
       targets.push({
         target: 'pino/file',
-        level: stdOptions.level || defaultLevel,
+        level: stdOptions.level || this.level,
         options: {
           sync: false,
           destination: 1
@@ -97,7 +103,6 @@ export class Logger implements LoggerType {
   }
 
   private fileTargets(options: LoggerOptions): LoggerTargets {
-    const defaultLevel = options.level || 'info'
     const targets: LoggerTargets = []
     for (const file of options.files || []) {
       let prettyOption: {
@@ -118,7 +123,7 @@ export class Logger implements LoggerType {
       if (prettyOption.enabled) {
         targets.push({
           target: 'pino-pretty',
-          level: file.level || defaultLevel,
+          level: file.level || this.level,
           options: {
             sync: false,
             colorize: true,
@@ -131,7 +136,7 @@ export class Logger implements LoggerType {
       } else {
         targets.push({
           target: 'pino/file',
-          level: file.level || defaultLevel,
+          level: file.level || this.level,
           options: {
             mkdir: true,
             sync: false,
@@ -144,7 +149,6 @@ export class Logger implements LoggerType {
   }
 
   private folderTargets(options: LoggerOptions): LoggerTargets {
-    const defaultLevel = options.level || 'info'
     const targets: LoggerTargets = []
 
     for (const folder of options.folders || []) {
@@ -153,7 +157,7 @@ export class Logger implements LoggerType {
       }
       targets.push({
         target: '@jvddavid/pino-rotating-file',
-        level: folder.level || defaultLevel,
+        level: folder.level || this.level,
         options: {
           path: folder.folder,
           pattern: folder.pattern || 'log-%Y-%M-%d-%N.log',
@@ -201,6 +205,10 @@ export class Logger implements LoggerType {
 
   get fatal() {
     return this.pino.fatal.bind(this.pino)
+  }
+
+  get silent() {
+    return this.pino.silent.bind(this.pino)
   }
 }
 
