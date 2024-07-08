@@ -10,7 +10,7 @@
     "url": "https://github.com/jvddavid/logger"
   },
   "license": "MIT",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "A simple logger for Node.js",
   "keywords": [
     "logger",
