@@ -1,13 +1,13 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.8.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
   "organizeImports": {
     "enabled": true
   },
   "files": {
     "maxSize": 134217728,
-    "include": ["src/**/*", "scripts/**/*", "test/**/*"],
+    "include": ["src/**/*", "test/**/*", "*.ts", "*.js", "*.json", "*.cjs"],
     "ignoreUnknown": true,
-    "ignore": ["node_modules/**"]
+    "ignore": ["**/node_modules/**", "node_modules"]
   },
   "linter": {
     "enabled": true,
@@ -17,7 +17,8 @@
         "recommended": true
       },
       "style": {
-        "noDefaultExport": "off"
+        "noDefaultExport": "off",
+        "useNamingConvention": "off"
       },
       "correctness": {
         "noNodejsModules": "off"
@@ -78,7 +79,7 @@
   "json": {
     "parser": {
       "allowTrailingCommas": false,
-      "allowComments": false
+      "allowComments": true
     },
     "formatter": {
       "enabled": true,
