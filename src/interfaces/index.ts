@@ -10,9 +10,10 @@ interface TransportTargetOptions<TransportOptions = Record<string, unknown>> {
 
 export type LoggerTargets = TransportTargetOptions[]
 
-interface PrettyLoggerOptions {
+export interface PrettyLoggerOptions {
   enabled?: boolean // default: true
   colorize?: boolean // default: true
+  ignore?: string // default: 'pid,hostname'
 }
 
 type PrettyOption = boolean | PrettyLoggerOptions

@@ -1,23 +1,13 @@
 {
   "name": "@jvddavid/logger",
   "license": "MIT",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A simple logger for Node.js",
   "keywords": [
     "logger",
     "node",
     "nodejs",
     "typescript"
-  ],
-  "type": "module",
-  "module": "dist/index.js",
-  "main": "dist/index.cjs",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "README.md",
-    "package.json",
-    "tsconfig.json"
   ],
   "author": {
     "name": "João Victor Davi de Oliveira",
@@ -36,34 +26,52 @@
     "node": ">=18",
     "npm": ">=8"
   },
-  "devDependencies": {
-    "@biomejs/biome": "^1.8.3",
-    "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^11.1.6",
-    "@types/jest": "^29.5.12",
-    "@types/node": "^20.14.10",
-    "dts-bundle-generator": "^9.5.1",
-    "jest": "^29.7.0",
-    "rollup": "^4.18.1",
-    "ts-jest": "^29.2.2",
-    "tsx": "^4.16.2"
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "files": [
+    "dist",
+    "README.md",
+    "package.json",
+    "tsconfig.json"
+  ],
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
   },
-  "peerDependencies": {
-    "typescript": "^5.5.3",
-    "tslib": "^2.6.3"
+  "devDependencies": {
+    "@eslint/js": "^9.10.0",
+    "@stylistic/eslint-plugin": "^2.7.2",
+    "@types/node": "^22.5.4",
+    "eslint": "^9.10.0",
+    "globals": "^15.9.0",
+    "pkgroll": "^2.4.2",
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^8.4.0",
+    "vitest": "^2.0.5"
+  },
+  "scripts": {
+    "prepublishOnly": "npm run type:check && npm run lint && npm run build && npm run test",
+    "start": "node dist/index.mjs",
+    "type:check": "tsc --noEmit",
+    "build": "pkgroll --clean-dist --minify --target=es2023 --target=node20",
+    "lint": "eslint src tests",
+    "lint:fix": "eslint --fix src tests",
+    "dev": "tsx --watch src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@jvddavid/pino-rotating-file": "^1.0.6",
-    "pino": "^9.2.0",
-    "pino-pretty": "^11.2.1"
-  },
-  "scripts": {
-    "prepublishOnly": "npm run lint && npm run test && npm run build",
-    "build:types": "dts-bundle-generator --project ./tsconfig.json ./src/index.ts -o ./dist/index.d.ts",
-    "build:rollup": "rollup --config rollup.config.ts --configPlugin typescript",
-    "build": "npm run build:types && npm run build:rollup",
-    "lint": "biome lint",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "pino": "^9.4.0",
+    "pino-pretty": "^11.2.2"
   }
 }

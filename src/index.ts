@@ -1,4 +1,4 @@
-import type { LoggerLevel, LoggerOptions, LoggerTargets, LoggerType } from '@/interfaces'
+import type { LoggerLevel, LoggerOptions, LoggerTargets, LoggerType, PrettyLoggerOptions } from '@/interfaces'
 import pino from 'pino'
 
 export class Logger implements LoggerType {
@@ -61,19 +61,19 @@ export class Logger implements LoggerType {
       pretty: true
     }
 
-    let prettyOption: {
-      enabled?: boolean
-      colorize?: boolean
-    }
+    let prettyOption: PrettyLoggerOptions
     if (typeof stdOptions.pretty === 'boolean') {
       prettyOption = {
         enabled: stdOptions.pretty,
-        colorize: true
+        colorize: true,
+        ignore: 'pid,hostname'
       }
-    } else {
+    }
+    else {
       prettyOption = stdOptions.pretty || {
         enabled: true,
-        colorize: true
+        colorize: true,
+        ignore: 'pid,hostname'
       }
     }
 
@@ -85,11 +85,12 @@ export class Logger implements LoggerType {
           sync: false,
           colorize: prettyOption.colorize ?? true,
           translateTime: 'yyyy-mm-dd HH:MM:ss.l',
-          ignore: 'pid,hostname',
+          ignore: prettyOption.ignore,
           destination: 1
         }
       })
-    } else {
+    }
+    else {
       targets.push({
         target: 'pino/file',
         level: stdOptions.level || this.level,
@@ -105,16 +106,15 @@ export class Logger implements LoggerType {
   private fileTargets(options: LoggerOptions): LoggerTargets {
     const targets: LoggerTargets = []
     for (const file of options.files || []) {
-      let prettyOption: {
-        enabled?: boolean
-        colorize?: boolean
-      }
+      let prettyOption: PrettyLoggerOptions
       if (typeof file.pretty === 'boolean') {
         prettyOption = {
           enabled: file.pretty,
-          colorize: true
+          colorize: true,
+          ignore: 'pid,hostname'
         }
-      } else {
+      }
+      else {
         prettyOption = file.pretty || {
           enabled: false
         }
@@ -128,12 +128,13 @@ export class Logger implements LoggerType {
             sync: false,
             colorize: true,
             translateTime: 'yyyy-mm-dd HH:MM:ss.l',
-            ignore: 'pid,hostname',
+            ignore: prettyOption.ignore ?? 'pid,hostname',
             destination: file.path,
             mkdir: true
           }
         })
-      } else {
+      }
+      else {
         targets.push({
           target: 'pino/file',
           level: file.level || this.level,
@@ -183,6 +184,7 @@ export class Logger implements LoggerType {
   get log() {
     return this.pino.info.bind(this.pino)
   }
+
   get info() {
     return this.pino.info.bind(this.pino)
   }
@@ -211,5 +213,3 @@ export class Logger implements LoggerType {
     return this.pino.silent.bind(this.pino)
   }
 }
-
-export default Logger
