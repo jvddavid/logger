@@ -1,4 +1,4 @@
-import type { LoggerLevel, LoggerOptions, LoggerTargets, LoggerType, PrettyLoggerOptions } from '@/interfaces'
+import type { LogFn, LoggerLevel, LoggerOptions, LoggerTargets, LoggerType, PrettyLoggerOptions } from '@/interfaces'
 import pino from 'pino'
 
 export class Logger implements LoggerType {
@@ -181,35 +181,35 @@ export class Logger implements LoggerType {
     })
   }
 
-  get log() {
+  get log(): LogFn {
     return this.pino.info.bind(this.pino)
   }
 
-  get info() {
+  get info(): LogFn {
     return this.pino.info.bind(this.pino)
   }
 
-  get trace() {
+  get trace(): LogFn {
     return this.pino.trace.bind(this.pino)
   }
 
-  get debug() {
+  get debug(): LogFn {
     return this.pino.debug.bind(this.pino)
   }
 
-  get warn() {
+  get warn(): LogFn {
     return this.pino.warn.bind(this.pino)
   }
 
-  get error() {
+  get error(): LogFn {
     return this.pino.error.bind(this.pino)
   }
 
-  get fatal() {
+  get fatal(): LogFn {
     return this.pino.fatal.bind(this.pino)
   }
 
-  get silent() {
+  get silent(): LogFn {
     return this.pino.silent.bind(this.pino)
   }
 }
