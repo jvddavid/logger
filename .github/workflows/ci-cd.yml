@@ -19,6 +19,8 @@ jobs:
     permissions:
       contents: read
       packages: read
+    env:
+      REGISTRY_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -37,14 +39,15 @@ jobs:
           version: ${{ env.PNPM_VERSION }}
 
       - name: Get pnpm store directory
+        id: pnpm-store
         shell: bash
         run: |
-          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          echo "path=$(pnpm store path --silent)" >> $GITHUB_OUTPUT
 
       - name: Setup pnpm cache
         uses: actions/cache@v4
         with:
-          path: ${{ env.STORE_PATH }}
+          path: ${{ steps.pnpm-store.outputs.path }}
           key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
@@ -52,7 +55,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.REGISTRY_AUTH_TOKEN != '' && env.REGISTRY_AUTH_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Type check
         run: pnpm run type:check
@@ -82,6 +85,8 @@ jobs:
     permissions:
       contents: write
       packages: write
+    env:
+      REGISTRY_AUTH_TOKEN: ${{ secrets.GH_PACKAGES_TOKEN }}
 
     steps:
       - name: Checkout code
@@ -102,7 +107,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.REGISTRY_AUTH_TOKEN != '' && env.REGISTRY_AUTH_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Download build artifacts
         uses: actions/download-artifact@v4
@@ -113,7 +118,7 @@ jobs:
       - name: Publish to GitHub Packages
         run: pnpm publish --no-git-checks
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.REGISTRY_AUTH_TOKEN != '' && env.REGISTRY_AUTH_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1

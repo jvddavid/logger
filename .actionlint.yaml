@@ -1,0 +1,3 @@
+secrets:
+  - GITHUB_TOKEN
+  - GH_PACKAGES_TOKEN
