@@ -119,31 +119,3 @@ jobs:
         run: pnpm publish --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ env.REGISTRY_AUTH_TOKEN != '' && env.REGISTRY_AUTH_TOKEN || secrets.GITHUB_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          body: |
-            🚀 Automated release for version ${{ github.ref_name }}
-
-            ## 📦 Installation
-
-            Configure your `.npmrc`:
-            ```
-            @jvddavid:registry=https://npm.pkg.github.com
-            //npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN
-            ```
-
-            Then install:
-            ```
-            npm install @jvddavid/exnovaapi@${{ github.ref_name }}
-            ```
-
-            ## 📋 Changes
-            Please see the commit history for detailed changes.
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
