@@ -1,7 +1,7 @@
 {
   "name": "@jvddavid/logger",
   "license": "MIT",
-  "version": "1.0.15",
+  "version": "1.0.17",
   "description": "A simple logger for Node.js",
   "keywords": [
     "logger",
@@ -47,31 +47,40 @@
     }
   },
   "devDependencies": {
-    "@eslint/js": "^9.10.0",
-    "@stylistic/eslint-plugin": "^2.7.2",
-    "@types/node": "^22.5.4",
-    "eslint": "^9.10.0",
-    "globals": "^15.9.0",
-    "pkgroll": "^2.4.2",
-    "tsx": "^4.19.0",
-    "typescript": "^5.5.4",
-    "typescript-eslint": "^8.4.0",
-    "vitest": "^2.0.5"
+    "@eslint/js": "^9.39.1",
+    "@stylistic/eslint-plugin": "^5.6.1",
+    "@types/node": "^24.10.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
+    "pkgroll": "^2.21.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.0",
+    "vitest": "^4.0.13"
   },
   "scripts": {
     "prepublishOnly": "npm run type:check && npm run lint && npm run build && npm run test",
     "start": "node dist/index.mjs",
     "type:check": "tsc --noEmit",
-    "build": "pkgroll --clean-dist --minify --target=es2023 --target=node20",
+    "build": "pkgroll --clean-dist --minify --target=node24",
     "lint": "eslint src tests",
     "lint:fix": "eslint --fix src tests",
     "dev": "tsx --watch src/index.ts",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "version:patch": "npm version patch",
+    "version:minor": "npm version minor",
+    "version:major": "npm version major",
+    "release:patch": "npm run version:patch && git push --follow-tags",
+    "release:minor": "npm run version:minor && git push --follow-tags",
+    "release:major": "npm run version:major && git push --follow-tags",
+    "publish:github": "pnpm publish --registry https://npm.pkg.github.com",
+    "login:github": "npm login --registry=https://npm.pkg.github.com"
   },
   "dependencies": {
-    "@jvddavid/pino-rotating-file": "^1.0.6",
-    "pino": "^9.4.0",
-    "pino-pretty": "^11.2.2"
-  }
+    "@jvddavid/pino-rotating-file": "^1.1.1",
+    "pino": "^10.1.0",
+    "pino-pretty": "^13.1.2"
+  },
+  "packageManager": "pnpm@10.22.0"
 }
