@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@jvddavid/pino-rotating-file':
-        specifier: ^1.1.1
-        version: 1.1.1(tslib@2.8.1)(typescript@5.9.3)
+        specifier: ^1.1.2
+        version: 1.1.2(tslib@2.8.1)(typescript@5.9.3)
       pino:
         specifier: ^10.1.0
         version: 10.1.0
@@ -420,8 +420,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
 
-  '@jvddavid/pino-rotating-file@1.1.1':
-    resolution: {integrity: sha512-pIRqqdABnAjOL+ncrGaG++XZiJST5fE8KY4shbcsV0PxCcEAghTktYaUCuNe2NpHpvqtOb43+n4eIwcfoj9Pmw==, tarball: https://npm.pkg.github.com/download/@jvddavid/pino-rotating-file/1.1.1/bdfb8168117a451a2cc161986195619c8ece6a6c}
+  '@jvddavid/pino-rotating-file@1.1.2':
+    resolution: {integrity: sha512-y0kHCafeX8gXP59x006xo1fm7V4u8UqXtpm+uru766h2YoZBf8oKOTWupmHxp/dDQY4IDYpmTy8iAlekzp008A==, tarball: https://npm.pkg.github.com/download/@jvddavid/pino-rotating-file/1.1.2/de656ac480490e55414abc95da8bf5c24a353239}
     engines: {node: '>=22', npm: '>=11'}
     peerDependencies:
       tslib: ^2.6.3
@@ -1665,7 +1665,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
-  '@jvddavid/pino-rotating-file@1.1.1(tslib@2.8.1)(typescript@5.9.3)':
+  '@jvddavid/pino-rotating-file@1.1.2(tslib@2.8.1)(typescript@5.9.3)':
     dependencies:
       close-with-grace: 2.3.0
       pino-abstract-transport: 3.0.0
